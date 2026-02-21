@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>the board</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <a href="/">the board</a>
+    </div>
+    <button type="button" class="link-btn open-modal header-action">write on the board</button>
+  </header>
+  <h1><span class="prompt">/> </span>homepage</h1>
+  <% if (typeof err !== 'undefined' && err === 'missing') { %><p class="msg err">title and post required.</p><% } %>
+  <ul class="post-list">
+    <% posts.forEach(function(p) { %>
+    <li>
+      <a href="/post/<%= p.id %>"><%= p.title %></a>
+      <div class="post-meta"><%= p.username %> · <%= vagueDate(p.created_at) %> · <span class="views"><%= p.likes || 0 %></span></div>
+    </li>
+    <% }); %>
+  </ul>
+  <% if (posts.length === 0) { %>
+  <p>no posts yet.</p>
+  <% } %>
+  <div id="post-modal" class="modal" aria-hidden="true">
+    <div class="modal-overlay"></div>
+    <div class="modal-box">
+      <h2><span class="prompt">/> </span>write on the board</h2>
+      <form action="/post" method="post">
+        <label>username</label>
+        <input type="text" name="username" placeholder="anon" autocomplete="off">
+        <label>title</label>
+        <input type="text" name="title" required>
+        <label>post</label>
+        <textarea name="body" required></textarea>
+        <button type="submit">send</button>
+      </form>
+      <button type="button" class="link-btn close-modal">cancel</button>
+    </div>
+  </div>
+  <script>
+    (function() {
+      var modal = document.getElementById('post-modal');
+      function openModal() { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); }
+      function close() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
+      document.querySelector('.open-modal').onclick = openModal;
+      document.querySelector('.close-modal').onclick = close;
+      document.querySelector('.modal-overlay').onclick = close;
+      if (window.location.search.indexOf('err=missing') !== -1) openModal();
+    })();
+  </script>
+</body>
+</html>

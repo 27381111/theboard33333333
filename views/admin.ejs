@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>admin — the board</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <a href="/">the board</a>
+    </div>
+  </header>
+  <h1><span class="prompt">/> </span>admin</h1>
+  <p><a href="/">home</a> · <form action="/admin/logout" method="get" style="display:inline"><button type="submit" class="link-btn">logout</button></form></p>
+  <h2>posts</h2>
+  <ul class="post-list admin-list">
+    <% posts.forEach(function(p) { %>
+    <li>
+      <a href="/post/<%= p.id %>"><%= p.title %></a>
+      <span class="post-meta">· <%= p.username %> · <%= vagueDate(p.created_at) %> · <%= p.likes || 0 %> views</span>
+      <form action="/admin/delete/<%= p.id %>" method="post" style="display:inline; margin-left: 0.5rem;">
+        <button type="submit" class="like-btn del">[delete]</button>
+      </form>
+    </li>
+    <% }); %>
+  </ul>
+  <% if (posts.length === 0) { %><p>no posts.</p><% } %>
+</body>
+</html>

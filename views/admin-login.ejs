@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>admin — the board</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <a href="/">the board</a>
+    </div>
+  </header>
+  <h1><span class="prompt">/> </span>admin</h1>
+  <% if (typeof err !== 'undefined' && err === 'bad') { %><p class="msg err">wrong password.</p><% } %>
+  <form class="add-post" action="/admin" method="post">
+    <label>password</label>
+    <input type="password" name="password" required autocomplete="current-password">
+    <button type="submit">enter</button>
+  </form>
+  <p><a href="/">&larr; back</a></p>
+</body>
+</html>
