@@ -76,11 +76,30 @@ header {
   align-items: center;
   margin-bottom: 2rem;
   text-transform: lowercase;
+  gap: 1rem;
 }
 header .brand {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  min-width: 0;
+}
+header .header-action {
+  flex-shrink: 0;
+}
+.header-action .btn-short {
+  display: none;
+}
+.header-action .btn-full {
+  display: inline;
+}
+@media (max-width: 520px) {
+  .header-action .btn-short {
+    display: inline;
+  }
+  .header-action .btn-full {
+    display: none;
+  }
 }
 header .brand > a,
 header .brand .brand-link {
@@ -98,6 +117,11 @@ header .brand .brand-link:hover {
   color: #00ff41;
   background: none;
   border: none;
+}
+@media (max-width: 520px) {
+  .brand-ascii {
+    font-size: 0.35rem;
+  }
 }
 .brand-ascii .ascii-line {
   display: block;

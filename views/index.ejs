@@ -11,7 +11,7 @@
     <div class="brand">
       <%- include('partials/brand') %>
     </div>
-    <button type="button" class="link-btn open-modal header-action">write on the board</button>
+    <button type="button" class="link-btn open-modal header-action"><span class="btn-full">write on the board</span><span class="btn-short">write</span></button>
   </header>
   <h1><span class="prompt">/> </span><span class="typewriter-wrap"><span class="typewriter-text">homepage</span></span><span class="typewriter-cursor">|</span></h1>
   <% if (typeof err !== 'undefined' && err === 'missing') { %><p class="msg err">title and post required.</p><% } %>
@@ -47,7 +47,7 @@
       var modal = document.getElementById('post-modal');
       function openModal() { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); }
       function close() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
-      document.querySelector('.open-modal').onclick = openModal;
+      document.querySelectorAll('.open-modal').forEach(function(btn) { btn.onclick = openModal; });
       document.querySelector('.close-modal').onclick = close;
       document.querySelector('.modal-overlay').onclick = close;
       if (window.location.search.indexOf('err=missing') !== -1) openModal();
