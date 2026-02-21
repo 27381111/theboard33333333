@@ -42,6 +42,34 @@ h1 .prompt {
   color: #333;
 }
 
+.typewriter-wrap {
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  vertical-align: bottom;
+  animation: typewriter 0.9s steps(8) forwards;
+}
+.typewriter-text {
+  display: inline-block;
+  min-width: 8.2ch;
+  letter-spacing: 0.02em;
+}
+.typewriter-cursor {
+  opacity: 0;
+  animation: cursor-then-hide 1s forwards;
+  animation-delay: 0.9s;
+}
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 8.2ch; }
+}
+@keyframes cursor-then-hide {
+  0%, 20% { opacity: 1; }
+  21%, 40% { opacity: 0; }
+  41%, 60% { opacity: 1; }
+  61%, 100% { opacity: 0; }
+}
+
 header {
   display: flex;
   justify-content: space-between;
