@@ -43,17 +43,30 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', async (req, res) => {
-  const posts = await db.getPosts();
-  res.render('index', { posts });
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send('something went wrong');
 });
 
-app.get('/post/:id', async (req, res) => {
-  const post = await db.getPost(req.params.id);
-  if (!post) return res.status(404).send('post not found');
-  await db.incrementLikes(req.params.id);
-  post.views = (post.likes || 0) + 1;
-  res.render('post', { post });
+app.get('/', async (req, res, next) => {
+  try {
+    const posts = await db.getPosts();
+    res.render('index', { posts });
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.get('/post/:id', async (req, res, next) => {
+  try {
+    const post = await db.getPost(req.params.id);
+    if (!post) return res.status(404).send('post not found');
+    await db.incrementLikes(req.params.id);
+    post.views = (post.likes || 0) + 1;
+    res.render('post', { post });
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.post('/post', async (req, res) => {
