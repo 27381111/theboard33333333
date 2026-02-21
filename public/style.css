@@ -54,11 +54,48 @@ header .brand {
   flex-direction: column;
   gap: 0.15rem;
 }
-header .brand > a {
+header .brand > a,
+header .brand .brand-link {
   text-decoration: none;
 }
-header .brand > a:hover {
-  text-decoration: underline;
+header .brand > a:hover,
+header .brand .brand-link:hover {
+  text-decoration: none;
+}
+.brand-ascii {
+  margin: 0;
+  font-size: 0.4rem;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #00ff41;
+  background: none;
+  border: none;
+}
+.brand-ascii .ascii-line {
+  display: block;
+  opacity: 0;
+  animation: ascii-reveal 0.25s ease forwards;
+}
+.brand-ascii .ascii-line:nth-child(1) { animation-delay: 0s; }
+.brand-ascii .ascii-line:nth-child(2) { animation-delay: 0.06s; }
+.brand-ascii .ascii-line:nth-child(3) { animation-delay: 0.12s; }
+.brand-ascii .ascii-line:nth-child(4) { animation-delay: 0.18s; }
+.brand-ascii .ascii-line:nth-child(5) { animation-delay: 0.24s; }
+@keyframes ascii-reveal {
+  from {
+    opacity: 0;
+    filter: brightness(0.3);
+  }
+  to {
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+@media (min-width: 500px) {
+  .brand-ascii { font-size: 0.5rem; }
+}
+@media (min-width: 700px) {
+  .brand-ascii { font-size: 0.6rem; }
 }
 header .tagline {
   font-size: 0.85em;
