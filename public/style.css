@@ -201,9 +201,9 @@ header .user,
 }
 
 .post-list li.pinned {
-  border-left: 3px solid #00ff41;
+  border-left: 4px solid #00ff41;
   padding-left: 0.75rem;
-  background: rgba(0, 255, 65, 0.04);
+  background: rgba(0, 255, 65, 0.12);
 }
 .pinned-badge {
   display: inline-block;
