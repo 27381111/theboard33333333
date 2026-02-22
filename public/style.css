@@ -205,6 +205,12 @@ header .user,
   padding-left: 0.75rem;
   background: rgba(0, 255, 65, 0.12);
 }
+.pinned-star {
+  display: inline-block;
+  color: #00ff41;
+  margin-right: 0.4rem;
+  font-size: 1em;
+}
 .pinned-badge {
   display: inline-block;
   font-size: 0.7em;
