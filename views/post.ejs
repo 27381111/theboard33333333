@@ -18,5 +18,48 @@
     <div class="body"><%= post.body %></div>
   </article>
   <p><a href="/">&larr; back</a></p>
+
+  <section class="comments-section">
+    <h2><span class="prompt">/> </span>comments</h2>
+    <p><button type="button" class="link-btn open-comment-modal">leave a comment</button></p>
+    <% if (typeof comments !== 'undefined' && comments.length) { %>
+    <ul class="comment-list">
+      <% comments.forEach(function(c) { %>
+      <li class="comment">
+        <div class="comment-meta"><%= c.username %> · <%= vagueDate(c.created_at) %></div>
+        <div class="comment-body"><%= c.body %></div>
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <p class="no-comments">no comments yet.</p>
+    <% } %>
+  </section>
+
+  <div id="comment-modal" class="modal" aria-hidden="true">
+    <div class="modal-overlay"></div>
+    <div class="modal-box">
+      <h2><span class="prompt">/> </span>leave a comment</h2>
+      <form action="/post/<%= post.id %>/comment" method="post">
+        <label>username</label>
+        <input type="text" name="username" placeholder="anon" autocomplete="off">
+        <label>comment</label>
+        <textarea name="body" required placeholder="your comment..."></textarea>
+        <button type="submit">send</button>
+      </form>
+      <button type="button" class="link-btn close-comment-modal">cancel</button>
+    </div>
+  </div>
+  <script>
+    (function() {
+      var modal = document.getElementById('comment-modal');
+      function openModal() { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); }
+      function closeModal() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
+      document.querySelector('.open-comment-modal').onclick = openModal;
+      document.querySelector('.close-comment-modal').onclick = closeModal;
+      document.querySelector('#comment-modal .modal-overlay').onclick = closeModal;
+      if (window.location.search.indexOf('err=comment') !== -1) openModal();
+    })();
+  </script>
 </body>
 </html>

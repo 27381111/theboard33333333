@@ -211,6 +211,42 @@ article.post-single img {
   margin: 1rem 0;
 }
 
+.comments-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #1a1a1a;
+}
+.comments-section h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.comment-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+.comment-list .comment {
+  border-bottom: 1px solid #1a1a1a;
+  padding: 0.75rem 0;
+}
+.comment-meta {
+  color: #666;
+  font-size: 0.85em;
+  margin-bottom: 0.25rem;
+}
+.comment-body {
+  white-space: pre-wrap;
+  font-size: 0.95em;
+}
+.no-comments {
+  color: #666;
+  font-size: 0.9em;
+  margin-top: 0.5rem;
+}
+.modal-box .link-btn {
+  margin-top: 0.75rem;
+}
+
 /* Admin */
 .admin-actions {
   margin-bottom: 2rem;

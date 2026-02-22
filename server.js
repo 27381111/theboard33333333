@@ -63,7 +63,22 @@ app.get('/post/:id', async (req, res, next) => {
     if (!post) return res.status(404).send('post not found');
     await db.incrementLikes(req.params.id);
     post.views = (post.likes || 0) + 1;
-    res.render('post', { post });
+    const comments = await db.getComments(req.params.id);
+    res.render('post', { post, comments });
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.post('/post/:id/comment', async (req, res, next) => {
+  try {
+    const post = await db.getPost(req.params.id);
+    if (!post) return res.status(404).send('post not found');
+    const username = (req.body.username || '').trim();
+    const body = (req.body.body || req.body.comment || '').trim();
+    if (!body) return res.redirect('/post/' + req.params.id + '?err=comment');
+    await db.createComment(req.params.id, username, body);
+    res.redirect('/post/' + req.params.id);
   } catch (e) {
     next(e);
   }
