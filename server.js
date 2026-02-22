@@ -8,6 +8,8 @@ const db = require('./lib/db');
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const ADMIN_COOKIE = 'board_admin';
 const ADMIN_SALT = 'the_board_admin_salt';
+const CHAT_USERNAME_COOKIE = 'chatboard_username';
+const CHAT_RATE_LIMIT_SEC = 3;
 
 function adminToken() {
   if (!ADMIN_PASSWORD) return null;
@@ -93,12 +95,53 @@ app.post('/post', async (req, res) => {
   res.redirect('/');
 });
 
+// --- Chatboard ---
+app.get('/chat', (req, res) => {
+  const username = req.cookies[CHAT_USERNAME_COOKIE] || null;
+  res.render('chat', { username });
+});
+
+app.post('/chat/set-username', (req, res) => {
+  const username = (req.body.username || '').trim() || 'anon';
+  res.cookie(CHAT_USERNAME_COOKIE, username, { httpOnly: true, maxAge: 365 * 24 * 60 * 60 * 1000 });
+  res.redirect('/chat');
+});
+
+app.get('/chat/messages', async (req, res, next) => {
+  try {
+    const messages = await db.getChatMessages(200);
+    res.json(messages);
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.post('/chat/messages', async (req, res, next) => {
+  try {
+    const username = req.cookies[CHAT_USERNAME_COOKIE] || 'anon';
+    const body = (req.body.body || req.body.message || '').trim();
+    if (!body) return res.status(400).json({ error: 'empty message' });
+    const last = await db.getLastChatMessageByUsername(username);
+    if (last) {
+      const elapsed = (Date.now() - new Date(last.created_at).getTime()) / 1000;
+      if (elapsed < CHAT_RATE_LIMIT_SEC) {
+        return res.status(429).json({ error: 'rate_limit', retryAfter: Math.ceil(CHAT_RATE_LIMIT_SEC - elapsed) });
+      }
+    }
+    await db.addChatMessage(username, body);
+    res.json({ ok: true });
+  } catch (e) {
+    next(e);
+  }
+});
+
 // --- Admin (solo con password da env ADMIN_PASSWORD) ---
 app.get('/admin', async (req, res) => {
   if (!ADMIN_PASSWORD) return res.status(503).send('admin not configured');
   if (!isAdmin(req)) return res.render('admin-login', { err: req.query.err });
   const posts = await db.getPosts();
-  res.render('admin', { posts });
+  const chatMessages = await db.getChatMessages(100);
+  res.render('admin', { posts, chatMessages });
 });
 
 app.post('/admin', (req, res) => {
@@ -121,6 +164,12 @@ app.post('/admin/pin/:id', async (req, res) => {
 app.post('/admin/unpin', async (req, res) => {
   if (!ADMIN_PASSWORD || !isAdmin(req)) return res.redirect('/admin');
   await db.setPinnedPost(null);
+  res.redirect('/admin');
+});
+
+app.post('/admin/chat/delete/:id', async (req, res) => {
+  if (!ADMIN_PASSWORD || !isAdmin(req)) return res.redirect('/admin');
+  await db.deleteChatMessage(req.params.id);
   res.redirect('/admin');
 });
 

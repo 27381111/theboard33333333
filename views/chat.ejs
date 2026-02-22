@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chatboard — the board</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <%- include('partials/brand') %>
+    </div>
+    <a href="/">home</a>
+  </header>
+  <% if (!username) { %>
+  <h1><span class="prompt">/> </span>chatboard</h1>
+  <p>choose a username to join.</p>
+  <form action="/chat/set-username" method="post" class="chat-username-form">
+    <label>username</label>
+    <input type="text" name="username" placeholder="anon" autocomplete="off" required>
+    <button type="submit">enter</button>
+  </form>
+  <% } else { %>
+  <h1><span class="prompt">/> </span>chatboard</h1>
+  <p class="chat-notice">chat restores every 12h.</p>
+  <p class="chat-you">you're <strong><%= username %></strong></p>
+  <div id="chat-messages" class="chat-messages"></div>
+  <div class="chat-send">
+    <input type="text" id="chat-input" placeholder="message..." maxlength="500" autocomplete="off">
+    <button type="button" id="chat-send-btn">send</button>
+  </div>
+  <p id="chat-rate-msg" class="chat-rate-msg" style="display:none;"></p>
+  <script>
+    (function() {
+      var messagesEl = document.getElementById('chat-messages');
+      var input = document.getElementById('chat-input');
+      var sendBtn = document.getElementById('chat-send-btn');
+      var rateMsg = document.getElementById('chat-rate-msg');
+      var POLL_INTERVAL = 2500;
+      var lastMessageId = 0;
+
+      function renderMessages(list) {
+        if (!list || !list.length) return;
+        var maxId = Math.max.apply(null, list.map(function(m) { return m.id; }));
+        if (maxId <= lastMessageId) return;
+        var isInitial = messagesEl.children.length === 0;
+        list.forEach(function(m) {
+          if (isInitial || m.id > lastMessageId) {
+            var div = document.createElement('div');
+            div.className = 'chat-msg';
+            div.innerHTML = '<span class="chat-msg-user">' + escapeHtml(m.username) + '</span> <span class="chat-msg-time">' + formatTime(m.created_at) + '</span><br><span class="chat-msg-body">' + escapeHtml(m.body) + '</span>';
+            messagesEl.appendChild(div);
+            lastMessageId = Math.max(lastMessageId, m.id);
+          }
+        });
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }
+
+      function escapeHtml(s) {
+        var d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+      }
+      function formatTime(iso) {
+        var d = new Date(iso);
+        return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+      }
+
+      function poll() {
+        fetch('/chat/messages').then(function(r) { return r.json(); }).then(renderMessages).catch(function() {});
+      }
+      poll();
+      setInterval(poll, POLL_INTERVAL);
+
+      function send() {
+        var body = (input.value || '').trim();
+        if (!body) return;
+        input.value = '';
+        sendBtn.disabled = true;
+        rateMsg.style.display = 'none';
+        fetch('/chat/messages', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ body: body })
+        }).then(function(r) {
+          if (r.status === 429) {
+            return r.json().then(function(data) {
+              rateMsg.textContent = 'wait ' + (data.retryAfter || 3) + 's before sending again.';
+              rateMsg.style.display = 'block';
+            });
+          }
+          if (r.ok) poll();
+        }).catch(function() {}).then(function() { sendBtn.disabled = false; });
+      }
+      sendBtn.onclick = send;
+      input.onkeydown = function(e) {
+        if (e.key === 'Enter') { e.preventDefault(); send(); }
+      };
+    })();
+  </script>
+  <% } %>
+</body>
+</html>

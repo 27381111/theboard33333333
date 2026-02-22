@@ -11,7 +11,10 @@
     <div class="brand">
       <%- include('partials/brand') %>
     </div>
-    <button type="button" class="link-btn open-modal header-action"><span class="btn-full">write on the board</span><span class="btn-short">write</span></button>
+    <div class="header-right">
+      <button type="button" class="link-btn open-modal header-action"><span class="btn-full">write on the board</span><span class="btn-short">write</span></button>
+      <a href="/chat" class="header-chat-under">chatboard</a>
+    </div>
   </header>
   <h1><span class="prompt">/> </span><span class="typewriter-wrap"><span class="typewriter-text">homepage</span></span><span class="typewriter-cursor">|</span></h1>
   <% if (typeof err !== 'undefined' && err === 'missing') { %><p class="msg err">title and post required.</p><% } %>

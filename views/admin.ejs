@@ -37,5 +37,23 @@
     <% }); %>
   </ul>
   <% if (posts.length === 0) { %><p>no posts.</p><% } %>
+
+  <section class="admin-chat-section">
+    <h2><span class="prompt">/> </span>chatboard</h2>
+    <% if (typeof chatMessages !== 'undefined' && chatMessages.length) { %>
+    <ul class="admin-chat-list post-list">
+      <% chatMessages.forEach(function(m) { %>
+      <li>
+        <span class="chat-msg-preview"><strong><%= m.username %></strong> · <%= m.body.substring(0, 60) %><%= m.body.length > 60 ? '…' : '' %> · <%= vagueDate(m.created_at) %></span>
+        <form action="/admin/chat/delete/<%= m.id %>" method="post" style="display:inline;">
+          <button type="submit" class="like-btn del">[delete]</button>
+        </form>
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <p class="no-comments">no messages.</p>
+    <% } %>
+  </section>
 </body>
 </html>

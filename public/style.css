@@ -84,8 +84,18 @@ header .brand {
   gap: 0.15rem;
   min-width: 0;
 }
+header .header-right {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+}
 header .header-action {
   flex-shrink: 0;
+}
+.header-chat-under {
+  font-size: 0.9em;
 }
 .header-action .btn-short {
   display: none;
@@ -253,6 +263,69 @@ article.post-single img {
 .modal-box .link-btn {
   margin-top: 0.75rem;
 }
+
+/* Chatboard */
+.chat-notice {
+  font-size: 0.85em;
+  color: #666;
+  margin: 0.5rem 0;
+}
+.chat-you {
+  font-size: 0.9em;
+  color: #666;
+  margin-bottom: 0.75rem;
+}
+.chat-username-form label { display: block; margin-top: 0.5rem; color: #00ff41; }
+.chat-username-form input { margin-top: 0.25rem; background: #0d0d0d; border: 1px solid #333; color: #00ff41; padding: 0.4rem; font-family: inherit; width: 100%; max-width: 280px; }
+.chat-username-form button { margin-top: 0.5rem; }
+.chat-messages {
+  border: 1px solid #1a1a1a;
+  background: #0a0a0a;
+  min-height: 200px;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.chat-msg {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #151515;
+  font-size: 0.95em;
+}
+.chat-msg-user { color: #00ff41; }
+.chat-msg-time { color: #444; font-size: 0.85em; margin-left: 0.5rem; }
+.chat-msg-body { color: #ccc; }
+.chat-send {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.chat-send input {
+  flex: 1;
+  max-width: 400px;
+  background: #0d0d0d;
+  border: 1px solid #333;
+  color: #00ff41;
+  padding: 0.5rem;
+  font-family: inherit;
+}
+.chat-send button {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #00ff41;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+.chat-send button:hover { border-color: #00ff41; }
+.chat-rate-msg { font-size: 0.85em; color: #666; }
+
+.admin-chat-section { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #1a1a1a; }
+.admin-chat-section h2 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+.admin-chat-list { list-style: none; padding: 0; margin: 0; }
+.admin-chat-list li { border-bottom: 1px solid #1a1a1a; padding: 0.5rem 0; font-size: 0.9em; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+.admin-chat-list .chat-msg-preview { flex: 1; min-width: 0; }
+.admin-chat-list form { flex-shrink: 0; }
 
 /* Admin */
 .admin-actions {
