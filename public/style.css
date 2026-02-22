@@ -200,6 +200,11 @@ header .user,
   text-decoration: underline;
 }
 
+.post-list li.pinned {
+  border-left: 3px solid #00ff41;
+  padding-left: 0.75rem;
+  background: rgba(0, 255, 65, 0.04);
+}
 .pinned-badge {
   display: inline-block;
   font-size: 0.7em;
