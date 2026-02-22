@@ -96,21 +96,37 @@ app.post('/post', async (req, res) => {
 });
 
 // --- Chatboard ---
-app.get('/chat', (req, res) => {
-  const username = req.cookies[CHAT_USERNAME_COOKIE] || null;
-  res.render('chat', { username });
+app.get('/chat', async (req, res, next) => {
+  try {
+    const username = req.cookies[CHAT_USERNAME_COOKIE] || null;
+    if (username) await db.touchChatUser(username);
+    const activeCount = await db.getChatActiveCount();
+    res.render('chat', { username, err: req.query.err, activeCount });
+  } catch (e) {
+    next(e);
+  }
 });
 
-app.post('/chat/set-username', (req, res) => {
-  const username = (req.body.username || '').trim() || 'anon';
-  res.cookie(CHAT_USERNAME_COOKIE, username, { httpOnly: true, maxAge: 365 * 24 * 60 * 60 * 1000 });
-  res.redirect('/chat');
+app.post('/chat/set-username', async (req, res, next) => {
+  try {
+    const username = (req.body.username || '').trim() || 'anon';
+    const taken = await db.isChatUsernameTaken(username);
+    if (taken) return res.redirect('/chat?err=nametaken');
+    await db.touchChatUser(username);
+    res.cookie(CHAT_USERNAME_COOKIE, username, { httpOnly: true, maxAge: 365 * 24 * 60 * 60 * 1000 });
+    res.redirect('/chat');
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.get('/chat/messages', async (req, res, next) => {
   try {
+    const username = req.cookies[CHAT_USERNAME_COOKIE];
+    if (username) await db.touchChatUser(username);
     const messages = await db.getChatMessages(200);
-    res.json(messages);
+    const activeCount = await db.getChatActiveCount();
+    res.json({ messages, activeCount });
   } catch (e) {
     next(e);
   }
@@ -129,10 +145,15 @@ app.post('/chat/messages', async (req, res, next) => {
       }
     }
     await db.addChatMessage(username, body);
+    await db.touchChatUser(username);
     res.json({ ok: true });
   } catch (e) {
     next(e);
   }
+});
+
+app.get('/terms', (req, res) => {
+  res.render('terms');
 });
 
 // --- Admin (solo con password da env ADMIN_PASSWORD) ---

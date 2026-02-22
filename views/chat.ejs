@@ -13,8 +13,16 @@
     </div>
     <a href="/">home</a>
   </header>
+  <% 
+  var ac = typeof activeCount !== 'undefined' ? activeCount : 0;
+  var presenceText = ac === 0 ? 'no one here.' : (ac === 1 ? '1 here.' : ac + ' here.');
+  %>
+  <h1 class="chatboard-header">
+    <span><span class="prompt">/> </span>chatboard</span>
+    <span id="chat-presence" class="chat-presence"><%= presenceText %></span>
+  </h1>
   <% if (!username) { %>
-  <h1><span class="prompt">/> </span>chatboard</h1>
+  <% if (typeof err !== 'undefined' && err === 'nametaken') { %><p class="msg err">that username is already in use. pick another.</p><% } %>
   <p>choose a username to join.</p>
   <form action="/chat/set-username" method="post" class="chat-username-form">
     <label>username</label>
@@ -22,7 +30,6 @@
     <button type="submit">enter</button>
   </form>
   <% } else { %>
-  <h1><span class="prompt">/> </span>chatboard</h1>
   <p class="chat-notice">chat restores every 12h.</p>
   <p class="chat-you">you're <strong><%= username %></strong></p>
   <div id="chat-messages" class="chat-messages"></div>
@@ -67,8 +74,18 @@
         return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
       }
 
+      function setPresence(n) {
+        var el = document.getElementById('chat-presence');
+        if (!el) return;
+        el.textContent = n === 0 ? 'no one here.' : n === 1 ? '1 here.' : n + ' here.';
+      }
       function poll() {
-        fetch('/chat/messages').then(function(r) { return r.json(); }).then(renderMessages).catch(function() {});
+        fetch('/chat/messages').then(function(r) { return r.json(); }).then(function(data) {
+          var list = data.messages || data;
+          if (Array.isArray(list)) renderMessages(list);
+          else renderMessages(list.messages || []);
+          if (typeof data.activeCount === 'number') setPresence(data.activeCount);
+        }).catch(function() {});
       }
       poll();
       setInterval(poll, POLL_INTERVAL);
@@ -101,5 +118,6 @@
     })();
   </script>
   <% } %>
+  <p class="chat-terms"><a href="/terms">terms</a></p>
 </body>
 </html>
