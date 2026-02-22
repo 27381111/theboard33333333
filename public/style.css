@@ -190,6 +190,13 @@ header .user,
   text-decoration: underline;
 }
 
+.pinned-badge {
+  display: inline-block;
+  font-size: 0.7em;
+  color: #666;
+  margin-right: 0.5rem;
+  text-transform: lowercase;
+}
 .post-meta {
   color: #666;
   font-size: 0.85em;

@@ -18,6 +18,7 @@
   <ul class="post-list">
     <% posts.forEach(function(p) { %>
     <li>
+      <% if (p.pinned) { %><span class="pinned-badge">pinned</span> <% } %>
       <a href="/post/<%= p.id %>"><%= p.title %></a>
       <div class="post-meta"><%= p.username %> · <%= vagueDate(p.created_at) %> · <span class="views"><%= p.likes || 0 %></span></div>
     </li>

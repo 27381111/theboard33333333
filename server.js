@@ -113,6 +113,17 @@ app.post('/admin/delete/:id', (req, res) => {
   db.deletePost(req.params.id).then(() => res.redirect('/admin'));
 });
 
+app.post('/admin/pin/:id', async (req, res) => {
+  if (!ADMIN_PASSWORD || !isAdmin(req)) return res.redirect('/admin');
+  await db.setPinnedPost(req.params.id);
+  res.redirect('/admin');
+});
+app.post('/admin/unpin', async (req, res) => {
+  if (!ADMIN_PASSWORD || !isAdmin(req)) return res.redirect('/admin');
+  await db.setPinnedPost(null);
+  res.redirect('/admin');
+});
+
 app.get('/admin/logout', (req, res) => {
   res.clearCookie(ADMIN_COOKIE);
   res.redirect('/');

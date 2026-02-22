@@ -18,9 +18,19 @@
   <ul class="post-list admin-list">
     <% posts.forEach(function(p) { %>
     <li>
+      <% if (p.pinned) { %><span class="pinned-badge">pinned</span> <% } %>
       <a href="/post/<%= p.id %>"><%= p.title %></a>
       <span class="post-meta">· <%= p.username %> · <%= vagueDate(p.created_at) %> · <%= p.likes || 0 %> views</span>
-      <form action="/admin/delete/<%= p.id %>" method="post" style="display:inline; margin-left: 0.5rem;">
+      <% if (p.pinned) { %>
+      <form action="/admin/unpin" method="post" style="display:inline; margin-left: 0.25rem;">
+        <button type="submit" class="link-btn admin-pin">[unpin]</button>
+      </form>
+      <% } else { %>
+      <form action="/admin/pin/<%= p.id %>" method="post" style="display:inline; margin-left: 0.25rem;">
+        <button type="submit" class="link-btn admin-pin">[pin]</button>
+      </form>
+      <% } %>
+      <form action="/admin/delete/<%= p.id %>" method="post" style="display:inline; margin-left: 0.25rem;">
         <button type="submit" class="like-btn del">[delete]</button>
       </form>
     </li>
