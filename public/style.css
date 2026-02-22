@@ -330,13 +330,16 @@ article.post-single img {
 }
 .chat-send button:hover { border-color: #00ff41; }
 .chat-rate-msg { font-size: 0.85em; color: #666; }
-.chat-terms {
+.chat-terms,
+.footer-terms {
   margin-top: 1.5rem;
   font-size: 0.85em;
   color: #666;
 }
-.chat-terms a { color: #666; }
-.chat-terms a:hover { color: #00ff41; }
+.chat-terms a,
+.footer-terms a { color: #666; }
+.chat-terms a:hover,
+.footer-terms a:hover { color: #00ff41; }
 .terms-body { margin-top: 1rem; }
 .terms-body p { color: #999; font-size: 0.95em; }
 
