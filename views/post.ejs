@@ -16,7 +16,11 @@
     <h1><%= post.title %></h1>
     <div class="post-meta"><%= post.username %> · <%= vagueDate(post.created_at) %> · <span class="views"><%= typeof post.views !== 'undefined' ? post.views : (post.likes || 0) %></span></div>
     <div class="body"><%= post.body %></div>
-    <p class="post-share" data-post-url="<%= postUrl %>">share <a href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(postUrl) %>&text=<%= encodeURIComponent(post.title) %>" target="_blank" rel="noopener">on X</a> · <button type="button" class="link-btn copy-link-btn">copy link</button></p>
+    <div class="post-share" data-post-url="<%= postUrl %>">
+      <span class="post-share-label">share</span>
+      <a href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(postUrl) %>&text=<%= encodeURIComponent(post.title) %>" target="_blank" rel="noopener">on X</a>
+      <button type="button" class="link-btn copy-link-btn">copy link</button>
+    </div>
   </article>
   <p><a href="/">&larr; back</a></p>
 

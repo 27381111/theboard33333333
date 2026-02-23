@@ -232,12 +232,27 @@ article.post-single .body {
   margin: 1rem 0;
 }
 .post-share {
-  font-size: 0.9em;
-  color: #666;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  flex-wrap: wrap;
+  color: #00ff41;
 }
-.post-share a, .post-share .link-btn { color: #666; }
-.post-share a:hover, .post-share .link-btn:hover { color: #00ff41; }
+.post-share-label {
+  color: #666;
+  font-size: 0.9em;
+  margin-right: 0.25rem;
+}
+.post-share a, .post-share .link-btn {
+  color: #00ff41;
+  font-size: 0.9em;
+}
+.post-share a:hover, .post-share .link-btn:hover {
+  color: #39ff14;
+}
 article.post-single img {
   max-width: 100%;
   max-height: 70vh;
