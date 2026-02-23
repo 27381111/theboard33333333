@@ -17,9 +17,7 @@
       <h1><%= post.title %></h1>
       <div class="post-share" data-post-url="<%= postUrl %>">
         <span class="post-share-item">share</span>
-        <span class="post-share-sep" aria-hidden="true">·</span>
         <a class="post-share-item" href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(postUrl) %>&text=<%= encodeURIComponent(post.title) %>" target="_blank" rel="noopener">on X</a>
-        <span class="post-share-sep" aria-hidden="true">·</span>
         <button type="button" class="link-btn post-share-item copy-link-btn">copy link</button>
       </div>
     </div>
