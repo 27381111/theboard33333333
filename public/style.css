@@ -186,7 +186,8 @@ header .user,
 }
 
 .post-list li {
-  padding: 0.4rem 0;
+  border-bottom: 1px solid #1a1a1a;
+  padding: 0.8rem 0;
   transition: background 0.15s ease;
 }
 .post-list li:hover {
