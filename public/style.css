@@ -227,24 +227,28 @@ header .user,
 article.post-single {
   margin-top: 1rem;
 }
-article.post-single .body {
-  white-space: pre-wrap;
-  margin: 1rem 0;
+.post-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.post-title-row h1 {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
 }
 .post-share {
-  margin-top: 1.25rem;
-  padding-top: 1rem;
-  border-top: 1px solid #1a1a1a;
   display: flex;
   align-items: center;
-  gap: 0.5rem 1rem;
-  flex-wrap: wrap;
+  gap: 0.5rem;
+  flex-shrink: 0;
   color: #00ff41;
 }
 .post-share-label {
-  color: #666;
+  color: #00ff41;
   font-size: 0.9em;
-  margin-right: 0.25rem;
 }
 .post-share a, .post-share .link-btn {
   color: #00ff41;
@@ -252,6 +256,10 @@ article.post-single .body {
 }
 .post-share a:hover, .post-share .link-btn:hover {
   color: #39ff14;
+}
+article.post-single .body {
+  white-space: pre-wrap;
+  margin: 1rem 0;
 }
 article.post-single img {
   max-width: 100%;
