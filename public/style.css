@@ -186,8 +186,7 @@ header .user,
 }
 
 .post-list li {
-  border-bottom: 1px solid #1a1a1a;
-  padding: 0.8rem 0;
+  padding: 0.4rem 0;
   transition: background 0.15s ease;
 }
 .post-list li:hover {
@@ -221,53 +220,11 @@ header .user,
 .post-meta {
   color: #666;
   font-size: 0.85em;
-  margin-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #333;
-  width: 100%;
+  margin-top: 0.3em;
 }
 
 article.post-single {
   margin-top: 1rem;
-}
-.post-title-row {
-  display: flex;
-  justify-content: flex-start;
-  align-items: baseline;
-  gap: 1rem;
-  flex-wrap: wrap;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #333;
-  width: 100%;
-}
-.post-title-row h1 {
-  margin: 0;
-}
-.post-share {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
-  font-size: 0.85rem;
-  color: #00ff41;
-}
-.post-share-item,
-.post-share a,
-.post-share .link-btn {
-  color: #00ff41;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.post-share a:hover,
-.post-share .link-btn:hover {
-  color: #39ff14;
-}
-.post-share .link-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
 }
 article.post-single .body {
   white-space: pre-wrap;

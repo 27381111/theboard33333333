@@ -13,14 +13,7 @@
     </div>
   </header>
   <article class="post-single">
-    <div class="post-title-row">
-      <h1><%= post.title %></h1>
-      <div class="post-share" data-post-url="<%= postUrl %>">
-        <span class="post-share-item">share</span>
-        <a class="post-share-item" href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent(postUrl) %>&text=<%= encodeURIComponent(post.title) %>" target="_blank" rel="noopener">on X</a>
-        <button type="button" class="link-btn post-share-item copy-link-btn">copy link</button>
-      </div>
-    </div>
+    <h1><%= post.title %></h1>
     <div class="post-meta"><%= post.username %> · <%= vagueDate(post.created_at) %> · <span class="views"><%= typeof post.views !== 'undefined' ? post.views : (post.likes || 0) %></span></div>
     <div class="body"><%= post.body %></div>
   </article>
@@ -66,17 +59,6 @@
       document.querySelector('.close-comment-modal').onclick = closeModal;
       document.querySelector('#comment-modal .modal-overlay').onclick = closeModal;
       if (window.location.search.indexOf('err=comment') !== -1) openModal();
-      var copyBtn = document.querySelector('.copy-link-btn');
-      var shareEl = document.querySelector('.post-share');
-      if (copyBtn && shareEl) {
-        copyBtn.onclick = function() {
-          var url = shareEl.getAttribute('data-post-url');
-          if (url) navigator.clipboard.writeText(url).then(function() {
-            copyBtn.textContent = 'copied';
-            setTimeout(function() { copyBtn.textContent = 'copy link'; }, 1500);
-          });
-        };
-      }
     })();
   </script>
 </body>
