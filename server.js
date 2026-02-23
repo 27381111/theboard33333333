@@ -66,7 +66,8 @@ app.get('/post/:id', async (req, res, next) => {
     await db.incrementLikes(req.params.id);
     post.views = (post.likes || 0) + 1;
     const comments = await db.getComments(req.params.id);
-    res.render('post', { post, comments });
+    const postUrl = `${req.protocol}://${req.get('host')}/post/${req.params.id}`;
+    res.render('post', { post, comments, postUrl });
   } catch (e) {
     next(e);
   }
